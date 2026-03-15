@@ -11,7 +11,7 @@ export function useKanban() {
 
     try {
       const res = await fetch(
-        'http://127.0.0.1:1001/api/boards/1',
+        'https://kb.linky.cat/api/boards/1',
         {
           method: 'GET',
           headers: {
