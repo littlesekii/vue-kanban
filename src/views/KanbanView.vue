@@ -63,6 +63,7 @@ const onDragEnd = () => {
   </KanbanBoardComponent>
 
 
+  <footer>Development by Davi Bacalhau</footer>
   </main>
 </template>
 
@@ -89,5 +90,11 @@ const onDragEnd = () => {
   }
   .chosen {
     opacity: 1;
+  }
+
+  footer {
+    text-align: center;
+    padding: 5px;
+    font-size: 13pt;
   }
 </style>
