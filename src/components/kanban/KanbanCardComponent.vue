@@ -5,14 +5,23 @@ defineProps<{title: string}>();
 </script>
 
 <template>
-  <div class="card-item">
-    {{ title }}
+  <div class="card">
+    <p class="card-title">{{ title }}</p>
   </div>
 </template>
 
 <style scoped>
-  .card-item {
-    background-color: #AAA;
+  .card {
+    min-height: 200px;
+
+    border-radius: 15px;
+
+    background-color: #FFF;
     padding: 10px;
+
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px, rgba(9, 30, 66, 0.13) 0px 0px 1px 1px;
+  }
+  .card-title {
+    font-weight: 600;
   }
 </style>

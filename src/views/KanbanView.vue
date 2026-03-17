@@ -30,58 +30,106 @@ const onDragEnd = () => {
 </script>
 
 <template>
-  <main>
+  <main class="main">
+    <section class="kanban">
 
-    <div v-if="loading">Loading...</div>
+      <div class="loading" v-if="loading">
+        <p>Loading...</p>
+        </div>
 
-    <KanbanBoardComponent v-else-if="board" :title="board.title">
-      <draggableComponent
-        v-model="localFields"
-        group="fields"
-        item-key="id"
-        class="fields" ghost-class="ghost" drag-class="drag" chosen-class="chosen"
-        :animation="260"
-        @end="onDragEnd"
-      >
-        <template #item="{element: field}">
-          <KanbanFieldComponent :title="field.title">
-            <draggableComponent
-              v-model="field.cards"
-              group="cards"
-              item-key="id"
-              class="cards" ghost-class="ghost" drag-class="drag" chosen-class="chosen"
-              :animation="260"
-              @end="onDragEnd"
-            >
-              <template #item="{element: card}">
-                <KanbanCardComponent :title="card.title" />
-              </template>
-            </draggableComponent>
-          </KanbanFieldComponent>
-          </template>
-      </draggableComponent>
-  </KanbanBoardComponent>
+      <KanbanBoardComponent v-else-if="board" :title="board.title">
+        <draggableComponent
+          v-model="localFields"
+          group="fields"
+          item-key="id"
+          class="board-fields" ghost-class="ghost" drag-class="drag" chosen-class="chosen"
+          :animation="260"
+          @end="onDragEnd"
+        >
+          <template #item="{element: field}">
+            <KanbanFieldComponent :title="field.title" :card-amount="field.cards.length">
+              <draggableComponent
+                v-model="field.cards"
+                group="cards"
+                item-key="id"
+                class="field-cards" ghost-class="ghost" drag-class="drag" chosen-class="chosen"
+                :animation="260"
+                @end="onDragEnd"
+              >
+                <template #item="{element: card}">
+                  <KanbanCardComponent :title="card.title" />
+                </template>
+              </draggableComponent>
+            </KanbanFieldComponent>
+            </template>
+        </draggableComponent>
+    </KanbanBoardComponent>
 
-
-  <footer>Development by Davi Bacalhau</footer>
+    </section>
+    <footer class="footer">
+      <p>Development by Davi Bacalhau</p>
+    </footer>
   </main>
 </template>
 
 
 <style scoped>
-
-  .fields {
-    display: flex;
-    gap: 5px;
-  }
-  .cards {
+  .main {
     display: flex;
     flex-direction: column;
-    gap: 5px;
 
-    min-height: 150px;
+    height: 100dvh;
   }
 
+  .kanban {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    padding: 20px;
+  }
+
+  .loading {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: inherit;
+  }
+
+  .board-fields {
+    flex: 1;
+    display: flex;
+
+    height: inherit;
+    gap: 20px;
+  }
+
+  .field-cards {
+    flex: 1;
+    display: flex;
+
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .footer {
+    display: flex;
+
+    min-height: 5em;
+
+    align-items: center;
+    justify-content: center;
+
+    border-top: 1px solid black;
+
+    p {
+      font-size: 13pt;
+    }
+  }
+
+  /* DRAGGABLE */
   .ghost {
     opacity: 1;
   }
@@ -92,9 +140,5 @@ const onDragEnd = () => {
     opacity: 1;
   }
 
-  footer {
-    text-align: center;
-    padding: 5px;
-    font-size: 13pt;
-  }
+
 </style>
