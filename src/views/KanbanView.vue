@@ -114,8 +114,11 @@ const onDragEnd = () => {
     flex: 1;
     display: flex;
 
+    min-height: calc(200px / 2);
+
     flex-direction: column;
     gap: 10px;
+
   }
 
   .footer {

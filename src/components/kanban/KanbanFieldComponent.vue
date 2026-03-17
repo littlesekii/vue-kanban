@@ -48,8 +48,6 @@ defineProps<{title: string, cardAmount: number}>();
 
       color: #333;
       font-weight: 600;
-
-
     }
     .field-header-indicator-count {
       display: flex;
