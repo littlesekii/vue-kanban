@@ -87,6 +87,11 @@ const onDragEnd = () => {
     flex-direction: column;
 
     padding: 20px;
+
+    @media (max-width: 720px) {
+      padding-right: 70px;
+    }
+
   }
 
   .loading {
@@ -105,7 +110,7 @@ const onDragEnd = () => {
     height: inherit;
     gap: 20px;
 
-    @media (max-width: 800px) {
+    @media (max-width: 720px) {
       flex-direction: column;
     }
   }
