@@ -104,6 +104,10 @@ const onDragEnd = () => {
 
     height: inherit;
     gap: 20px;
+
+    @media (max-width: 800px) {
+      flex-direction: column;
+    }
   }
 
   .field-cards {
