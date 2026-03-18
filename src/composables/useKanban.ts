@@ -11,7 +11,8 @@ export function useKanban() {
 
     try {
       const res = await fetch(
-        'https://kb.linky.cat/api/boards/1',
+        import.meta.env.VITE_API_URL +
+        '/api/boards/1',
         {
           method: 'GET',
           headers: {
