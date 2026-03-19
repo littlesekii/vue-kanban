@@ -1,3 +1,4 @@
+import { boardService } from '@/api/services/boardService';
 import type { KanbanBoard } from '@/types/kanban';
 import { readonly, ref } from 'vue';
 
@@ -10,18 +11,7 @@ export function useKanban() {
     loading.value = true;
 
     try {
-      const res = await fetch(
-        import.meta.env.VITE_API_URL +
-        '/api/boards/1',
-        {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json'
-          }
-        }
-      );
-      const data = await res.json();
-      board.value = data;
+      board.value = await boardService.fetch(1);
     } finally {
       loading.value = false;
     }
