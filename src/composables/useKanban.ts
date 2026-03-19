@@ -17,14 +17,9 @@ export function useKanban() {
     }
   };
 
-  const updateBoard = (newBoard: KanbanBoard): void => {
-    board.value = newBoard;
-  };
-
   return {
     board: readonly(board),
     loading: readonly(loading),
-    fetchBoard,
-    updateBoard
+    fetchBoard
   };
 }

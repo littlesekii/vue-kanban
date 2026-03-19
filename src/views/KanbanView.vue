@@ -5,27 +5,54 @@ import KanbanCardComponent from '@/components/kanban/KanbanCardComponent.vue';
 import KanbanFieldComponent from '@/components/kanban/KanbanFieldComponent.vue';
 import { useKanban } from '@/composables/useKanban';
 import type { KanbanField } from '@/types/kanban';
-import { onMounted, ref, watchEffect } from 'vue';
+import { onMounted, ref } from 'vue';
 import draggableComponent from 'vuedraggable';
 
-const { board, loading, fetchBoard, updateBoard } = useKanban();
+const { board, loading, fetchBoard } = useKanban();
 
 const localFields = ref<KanbanField[]>([]);
 
 onMounted(async () => {
-  fetchBoard();
-});
-
-watchEffect(() => {
+  await fetchBoard();
   if (board.value) {
     localFields.value = JSON.parse(JSON.stringify(board.value.fields));
   }
 });
 
-const onDragEnd = () => {
-  if (board.value) {
-    updateBoard({ ...board.value, fields: localFields.value });
+const onFieldDragEnd = () => {
+  const body = {
+    id:
+    localFields.value.map(field => field.id)
+  };
+
+};
+
+const onCardsDragEnd = (event: any) => {
+  const { from, to } = event;
+
+  const sourceField: KanbanField = JSON.parse(from.dataset.field);
+  const targetField: KanbanField = JSON.parse(to.dataset.field);
+
+  const body = [];
+
+  body.push({
+    id: sourceField.id,
+    cardIds: sourceField.cards.map(card => card.id)
+  });
+
+  if (targetField.id !== sourceField.id) {
+    body.push({
+      id: targetField.id,
+      cardIds: targetField.cards.map(card => card.id)
+    });
   }
+
+  try {
+    fieldService.moveCards(body);
+  } catch (error) {
+    console.log(error);
+  }
+
 };
 
 const renameField = async (field: KanbanField, title: string) => {
@@ -62,7 +89,7 @@ const renameField = async (field: KanbanField, title: string) => {
           item-key="id"
           class="board-fields" ghost-class="ghost" drag-class="drag" chosen-class="chosen"
           :animation="260"
-          @end="onDragEnd"
+          @end="onFieldDragEnd"
         >
           <template #item="{element: field}">
             <KanbanFieldComponent class="field" :title="field.title" @update:title="renameField(field, $event)" :card-amount="field.cards.length">
@@ -72,7 +99,9 @@ const renameField = async (field: KanbanField, title: string) => {
                 item-key="id"
                 class="field-cards" ghost-class="ghost" drag-class="drag" chosen-class="chosen"
                 :animation="260"
-                @end="onDragEnd"
+
+                :data-field="JSON.stringify(field)"
+                @end="onCardsDragEnd"
               >
 
                 <template #item="{element: card}">
