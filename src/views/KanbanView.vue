@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { fieldService } from '@/api/services/fieldService';
 import KanbanBoardComponent from '@/components/kanban/KanbanBoardComponent.vue';
 import KanbanCardComponent from '@/components/kanban/KanbanCardComponent.vue';
 import KanbanFieldComponent from '@/components/kanban/KanbanFieldComponent.vue';
@@ -27,6 +28,23 @@ const onDragEnd = () => {
   }
 };
 
+const renameField = async (field: KanbanField, title: string) => {
+  const oldTitle = field.title;
+
+  field.title = title;
+
+  const body = {
+	  'title': title,
+  };
+
+  try {
+    const res = await fieldService.patch(field.id, body);
+    console.log(res);
+  } catch {
+    field.title = oldTitle;
+  }
+};
+
 </script>
 
 <template>
@@ -47,7 +65,7 @@ const onDragEnd = () => {
           @end="onDragEnd"
         >
           <template #item="{element: field}">
-            <KanbanFieldComponent :title="field.title" :card-amount="field.cards.length">
+            <KanbanFieldComponent class="field" :title="field.title" @update:title="renameField(field, $event)" :card-amount="field.cards.length">
               <draggableComponent
                 v-model="field.cards"
                 group="cards"
@@ -56,9 +74,17 @@ const onDragEnd = () => {
                 :animation="260"
                 @end="onDragEnd"
               >
+
                 <template #item="{element: card}">
                   <KanbanCardComponent :title="card.title" />
                 </template>
+
+                <template #footer>
+                  <button class="add-card-button">
+                    + Create
+                  </button>
+                </template>
+
               </draggableComponent>
             </KanbanFieldComponent>
             </template>
@@ -104,7 +130,7 @@ const onDragEnd = () => {
   }
 
   .board-fields {
-    flex: 1;
+    /* flex: 1; */
     display: flex;
 
     height: inherit;
@@ -115,11 +141,41 @@ const onDragEnd = () => {
     }
   }
 
+  .field {
+    .add-card-button {
+      visibility: hidden;
+
+      padding: 10px 10px;
+
+      color: #777;
+      font-size: 16px;
+      text-align: left;
+
+      border: none;
+      background-color: inherit;
+      border-radius: 5px;
+
+      font-weight: 600;
+
+      cursor: pointer;
+
+    }
+    .add-card-button:hover {
+      background-color: #e0e3e6;
+    }
+  }
+
+  .field:hover {
+    .add-card-button {
+      visibility: visible;
+    }
+  }
+
   .field-cards {
     flex: 1;
     display: flex;
 
-    min-height: calc(200px / 2);
+    /* min-height: calc(200px / 2); */
 
     flex-direction: column;
     gap: 10px;

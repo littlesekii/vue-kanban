@@ -12,9 +12,9 @@ defineProps<{title: string}>();
 
 <style scoped>
   .card {
-    min-height: 200px;
+    min-height: 130px;
 
-    border-radius: 15px;
+    border-radius: 5px;
 
     background-color: #FFF;
     padding: 10px;
