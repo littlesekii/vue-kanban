@@ -163,6 +163,12 @@ const renameField = async (field: KanbanField, title: string) => {
     .add-card-button:hover {
       background-color: #e0e3e6;
     }
+
+    @media (max-width: 720px) {
+      .add-card-button {
+        visibility: visible;
+      }
+    }
   }
 
   .field:hover {
