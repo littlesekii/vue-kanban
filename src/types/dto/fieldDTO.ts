@@ -2,7 +2,7 @@ export interface FieldPatchDTO {
   title: string,
 }
 
-export interface FieldPatchMoveCardDTO {
+export interface FieldPatchMoveCardsDTO {
   id: number,
   cardIds: number[]
 }
