@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { boardService } from '@/api/services/boardService';
 import { fieldService } from '@/api/services/fieldService';
 import KanbanBoardComponent from '@/components/kanban/KanbanBoardComponent.vue';
 import KanbanCardComponent from '@/components/kanban/KanbanCardComponent.vue';
@@ -10,20 +11,28 @@ import draggableComponent from 'vuedraggable';
 
 const { board, loading, fetchBoard } = useKanban();
 
+const boardId = ref<number>(0);
 const localFields = ref<KanbanField[]>([]);
 
 onMounted(async () => {
   await fetchBoard();
+
   if (board.value) {
+    boardId.value = board.value.id;
     localFields.value = JSON.parse(JSON.stringify(board.value.fields));
   }
 });
 
 const onFieldDragEnd = () => {
   const body = {
-    id:
-    localFields.value.map(field => field.id)
+    fieldIds: localFields.value.map(field => field.id)
   };
+
+  try {
+    boardService.moveFields(boardId.value, body);
+  } catch (error) {
+    console.log(error);
+  }
 
 };
 
